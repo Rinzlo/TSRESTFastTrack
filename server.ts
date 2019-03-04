@@ -1,13 +1,17 @@
 import express from "express";
 const app = express();
 
+import { DataStore } from './data/data';
+import { apiGetTours } from './api/tours/apiGetTours';
+import { apiGetTourDetail } from './api/tours/apiGetTourDetail';
+
 app.get("/", (req, res, next) => {
     res.send("Tour Booking API");
 });
 
-app.get("/tours", (req, res, next) => {
-    res.send("Get a list of tours...");
-});
+app.get("/tours", apiGetTours);
+
+app.get("/tours/:id", apiGetTourDetail);
 
 app.post("/tours", (req, res, next) => {
     res.send("Add a new tour...");
