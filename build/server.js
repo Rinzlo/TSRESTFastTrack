@@ -15,23 +15,14 @@ const app = express_1.default();
 const bodyparser = __importStar(require("body-parser"));
 // build json parsing middlewear
 const jsonParser = bodyparser.json();
+const urlEncodedParser = bodyparser.urlencoded({ extended: true });
 const apiGetTours_1 = require("./api/tours/apiGetTours");
 const apiGetTourDetail_1 = require("./api/tours/apiGetTourDetail");
 const apiCreateTour_1 = require("./api/tours/apiCreateTour");
 const apiDeleteTour_1 = require("./api/tours/apiDeleteTour");
 const apiUpdateTour_1 = require("./api/tours/apiUpdateTour");
-// auth middleware
-const authenticator = (req, res, next) => {
-    const username = "Andy123";
-    req.user = username;
-    next();
-};
-// logging requests middleware
-const logger = (req, res, next) => {
-    console.log("User: " + req.user + " - " + new Date() + " - " + req.method + " Request to " + req.path);
-    next();
-};
-app.use(authenticator);
+const morgan_1 = __importDefault(require("morgan"));
+const logger = morgan_1.default("dev");
 app.use(logger);
 app.get("/", (req, res, next) => {
     res.send("Tour Booking API");

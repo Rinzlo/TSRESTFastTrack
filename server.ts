@@ -4,6 +4,7 @@ const app = express();
 import * as bodyparser from "body-parser";
 // build json parsing middlewear
 const jsonParser = bodyparser.json();
+const urlEncodedParser = bodyparser.urlencoded({extended: true});
 
 import { DataStore } from './data/data';
 import { apiGetTours } from './api/tours/apiGetTours';
@@ -13,20 +14,8 @@ import { apiDeleteTour } from './api/tours/apiDeleteTour';
 import { apiUpdateTour } from './api/tours/apiUpdateTour';
 import { CustomRequestHandler } from './model/express';
 
-// auth middleware
-const authenticator: CustomRequestHandler = (req, res, next) => {
-    const username = "Andy123";
-    req.user = username;
-    next();
-};
-
-// logging requests middleware
-const logger: CustomRequestHandler = (req, res, next) => {
-    console.log("User: " + req.user + " - " + new Date() + " - " + req.method + " Request to " + req.path);
-    next();
-};
-
-app.use(authenticator);
+import morgan from "morgan";
+const logger = morgan("dev");
 
 app.use(logger);
 
