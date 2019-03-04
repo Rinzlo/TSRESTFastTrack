@@ -17,6 +17,7 @@ import { CustomRequestHandler } from './model/express';
 import path from "path";
 
 import morgan from "morgan";
+import { apiUploadImage } from './api/tours/apiUploadImage';
 const logger = morgan("dev");
 
 app.use(logger);
@@ -37,6 +38,8 @@ app.post("/tours", jsonParser, apiCreateTour);
 app.delete("/tours/:id", apiDeleteTour);
 
 app.patch("/tours/:id", jsonParser, apiUpdateTour);
+
+app.post("/tours/:id/img", apiUploadImage);
 
 app.listen(process.env.PORT || 8091, () => {
     console.log("Server started...");
