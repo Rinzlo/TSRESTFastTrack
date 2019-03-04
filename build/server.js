@@ -21,9 +21,12 @@ const apiGetTourDetail_1 = require("./api/tours/apiGetTourDetail");
 const apiCreateTour_1 = require("./api/tours/apiCreateTour");
 const apiDeleteTour_1 = require("./api/tours/apiDeleteTour");
 const apiUpdateTour_1 = require("./api/tours/apiUpdateTour");
+// adjusts path to OS
+const path_1 = __importDefault(require("path"));
 const morgan_1 = __importDefault(require("morgan"));
 const logger = morgan_1.default("dev");
 app.use(logger);
+app.use("/static", express_1.default.static(path_1.default.resolve("./", "public", "img")));
 app.get("/", (req, res, next) => {
     res.send("Tour Booking API");
 });

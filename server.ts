@@ -13,11 +13,15 @@ import { apiCreateTour } from './api/tours/apiCreateTour';
 import { apiDeleteTour } from './api/tours/apiDeleteTour';
 import { apiUpdateTour } from './api/tours/apiUpdateTour';
 import { CustomRequestHandler } from './model/express';
+// adjusts path to OS
+import path from "path";
 
 import morgan from "morgan";
 const logger = morgan("dev");
 
 app.use(logger);
+
+app.use("/static", express.static(path.resolve("./", "public", "img")));
 
 app.get("/", (req, res, next) => {
     res.send("Tour Booking API");
