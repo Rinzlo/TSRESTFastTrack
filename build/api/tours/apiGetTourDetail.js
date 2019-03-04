@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const data_1 = require("../../data/data");
 const tourDetail_1 = require("../../model/shared/tourDetail");
 const static_1 = require("../general/static");
+const messages_1 = require("../../model/shared/messages");
 exports.apiGetTourDetail = (req, res, next) => {
     const tourID = req.params.id;
     const selectedTour = data_1.DataStore.tours.find((element) => element.id == tourID);
@@ -12,6 +13,6 @@ exports.apiGetTourDetail = (req, res, next) => {
         res.json(new tourDetail_1.TourDetail(selectedTour, selectedReviews, imageURLs));
     }
     else {
-        res.json({ "status": "failed", "message": "Element not found" });
+        return next(new messages_1.APIError("Validation Error", "Tour not found.", 400));
     }
 };

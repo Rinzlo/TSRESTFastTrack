@@ -1,23 +1,24 @@
 import { DataStore } from '../../data/data';
 import { RequestHandler } from 'express';
 import { getFileUploader } from '../general/static';
+import { PublicInfo, APIError } from '../../model/shared/messages';
 
 export const apiUploadImage: RequestHandler = (req, res, next) => {
     const tourID = req.params.id;
     const tourIndex = DataStore.tours.findIndex((item: any) => item.id == tourID);
     if(tourIndex == -1) {
-        res.json({"status": "error", "message": "Tour not found"});
+        return next(new APIError("Validation Error", "Could not locate tour", 400));
     }
     else {
         const upload = getFileUploader(req.app.get("env"));
         upload(req, res, (err) => {
             if(err) {
                 console.log(err);
-                res.json({status: "error", message: "File Upload Failed!"});
+                return next(new APIError("Upload Failure", "Failed to upload image.", 400));
             }
             else {
                 DataStore.tours[tourIndex].img.push(req.file.filename);
-                res.json({status: "success", message: "File Uploaded!"})
+                res.json(new PublicInfo("Tour image uploaded!", 200));
             }
         })
     }
