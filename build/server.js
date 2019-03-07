@@ -26,12 +26,28 @@ const path_1 = __importDefault(require("path"));
 const morgan_1 = __importDefault(require("morgan"));
 const apiUploadImage_1 = require("./api/tours/apiUploadImage");
 const errorHandling_1 = require("./api/general/errorHandling");
+const messages_1 = require("./model/shared/messages");
+const dateParam_1 = require("./api/general/reqParams/dateParam");
 const logger = morgan_1.default("dev");
 app.use(logger);
+app.use((req, res, next) => {
+    if (req.accepts("application/json")) {
+        next();
+    }
+    else {
+        next(new messages_1.APIError("Content Type not supported", "This API only supports application/json", 400));
+    }
+});
+app.post("/headers", (req, res, next) => res.json(req.headers));
 app.use("/static", express_1.default.static(path_1.default.resolve("./", "public", "img")));
 app.get("/", (req, res, next) => {
     res.send("Tour Booking API");
 });
+// Uses the middleware "dateParam" on any route parameter 
+// with "fromDate" or "toDate".
+app.param("fromDate", dateParam_1.dateParam);
+app.param("toDate", dateParam_1.dateParam);
+app.get(`/bookings/:fromDate/:toDate`, (req, res, next) => res.json(req.params));
 app.get("/tours", apiGetTours_1.apiGetTours);
 app.get("/tours/:id", apiGetTourDetail_1.apiGetTourDetail);
 // url, middleware, routing/controller
