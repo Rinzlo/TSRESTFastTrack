@@ -7,9 +7,9 @@ exports.apiDeleteTour = (req, res, next) => {
     const tourIndex = data_1.DataStore.tours.findIndex((item) => item.id == tourID);
     if (tourIndex > -1) {
         data_1.DataStore.tours.splice(tourIndex);
-        res.json(new messages_1.PublicInfo("Tour deleted", 200));
+        res.json(messages_1.PublicInfo.infoDeleted());
     }
     else {
-        return next(new messages_1.APIError("Validation Error", "Tour not found.", 400));
+        next(messages_1.APIError.errNotFound());
     }
 };
